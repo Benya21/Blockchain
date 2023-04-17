@@ -1,0 +1,55 @@
+pragma solidity ^0.8.0;
+
+contract StudentData {
+    
+    struct Student {
+        string name;
+        string lastname;
+        uint gpax;
+        bool flag;
+    }
+    
+    mapping(uint => Student) private students;
+    
+    function addStudent(uint id, string memory name, string memory lastname, uint gpax, bool flag) public {
+        students[id] = Student(name, lastname, gpax, flag);
+    }
+    
+    function editStudent(uint id, string memory name, string memory lastname, uint gpax, bool flag) public {
+        students[id] = Student(name, lastname, gpax, flag);
+    }
+    
+    function deleteStudent(uint id) public {
+        students[id].flag = true;
+    }
+    
+    function getStudent(uint id) public view returns(string memory, string memory, uint, bool) {
+        return (students[id].name, students[id].lastname, students[id].gpax, students[id].flag);
+    }
+    
+    function getAllStudents() public view returns(uint[] memory, string[] memory, string[] memory, uint[] memory, bool[] memory) {
+        uint length = 0;
+        for (uint i = 0; i <= 100; i++) {
+            if (!students[i].flag) {
+                length++;
+            }
+        }
+        uint[] memory ids = new uint[](length);
+        string[] memory names = new string[](length);
+        string[] memory lastnames = new string[](length);
+        uint[] memory gpaxs = new uint[](length);
+        bool[] memory flags = new bool[](length);
+        uint j = 0;
+        for (uint i = 0; i <= 100; i++) {
+            if (!students[i].flag) {
+                ids[j] = i;
+                names[j] = students[i].name;
+                lastnames[j] = students[i].lastname;
+                gpaxs[j] = students[i].gpax;
+                flags[j] = students[i].flag;
+                j++;
+            }
+        }
+        return (ids, names, lastnames, gpaxs, flags);
+    }
+}
